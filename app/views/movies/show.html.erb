@@ -1,0 +1,33 @@
+<%= link_to 'Back to Movies', movies_path %>
+
+<h2><%= @movie.title %><small> Directed by <%= @movie.director %></small></h2>
+
+<%= image_tag(@movie.image_url(:thumb)) %>
+
+<h3>Runtime: <%= @movie.runtime_in_minutes %> minutes</h3>
+<h3>Release Date: <%= formatted_date(@movie.release_date) %></h3>
+
+
+<h3>Average Review Score: <em><%= @movie.review_average %></em></h3>
+
+<p><%= @movie.description %></p>
+
+<hr>
+<h3>Reviews of <em><%= @movie.title %></em></h3>
+<% if current_user %>
+<% @movie.reviews.each do |review| %>
+  <p><%= review.text %></p>
+  <p><%= review.rating_out_of_ten %>/10</p>
+  <small>- <%= review.user.full_name %></small><br/>
+<% end %>
+  <p><%= link_to "Write a review!", new_movie_review_path(@movie) %></p>
+<% else %>
+  <p>Please <%= link_to "log in", new_session_path %> to see reviews and add your own.</p> 
+<% end %>
+<hr>
+
+<h3>
+  <%= link_to "Edit", edit_movie_path(@movie) %>
+  /
+  <%= link_to "Delete", movie_path(@movie), method: :delete, confirm: "You sure?" %>
+</h3>
